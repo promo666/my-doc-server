@@ -2,21 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
+const path = require('path');
 
 const app = express();
 app.set('trust proxy', 1);
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const FRONTEND_URL = process.env.FRONTEND_URL; // e.g. https://flourishing-lamington-1da59e.netlify.app
 const SCOPES = [
   'https://www.googleapis.com/auth/drive.file',
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/userinfo.profile'
 ].join(' ');
 
-app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 
 // In-memory session store: sessionId -> { refreshToken }
 // Note: this resets if the server restarts/redeploys. Fine for a small personal app.
@@ -76,10 +77,10 @@ app.get('/auth/google/callback', async (req, res) => {
     res.cookie('sid', sessionId, {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
+      sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 30 // 30 days
     });
-    res.redirect(FRONTEND_URL);
+    res.redirect('/');
   }catch(e){
     res.status(500).send('Sign-in failed: ' + e.message);
   }
