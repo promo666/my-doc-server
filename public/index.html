@@ -558,12 +558,14 @@
     setTimeout(()=> URL.revokeObjectURL(url), 4000);
   }
 
-  async function printDoc(doc){
-    let blob;
-    try{ blob = await downloadDriveBlob(doc.driveFileId); }catch(e){ blob = null; }
-    if(!blob){ showToast(t('toastError')); return; }
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
+  function printDoc(doc){
+    const win = window.open('', '_blank'); // must open synchronously, before any await, or mobile browsers block it
+    downloadDriveBlob(doc.driveFileId).then(blob=>{
+      if(!blob){ showToast(t('toastError')); if(win) win.close(); return; }
+      const url = URL.createObjectURL(blob);
+      if(win){ win.location.href = url; }
+      else { showToast(t('toastError')); }
+    }).catch(()=>{ showToast(t('toastError')); if(win) win.close(); });
   }
 
   function driveViewLink(doc){ return `https://drive.google.com/file/d/${doc.driveFileId}/view`; }
