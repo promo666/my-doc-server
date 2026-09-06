@@ -29,6 +29,9 @@ function backendUrl(req){
 // Step 1: send the browser to Google's consent screen
 app.get('/auth/google', (req, res) => {
   const redirectUri = `${backendUrl(req)}/auth/google/callback`;
+  if(req.query.debug){
+    return res.send('Computed redirect_uri: [' + redirectUri + ']');
+  }
   const state = crypto.randomBytes(16).toString('hex');
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
