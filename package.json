@@ -1,0 +1,15 @@
+{
+  "name": "my-doc-server",
+  "version": "1.0.0",
+  "description": "Backend for My Doc — handles Google sign-in and keeps users signed in long-term",
+  "main": "server.js",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
