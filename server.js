@@ -123,6 +123,25 @@ app.post('/auth/logout', (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/privacy', (req, res) => {
+  res.send(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>My Doc — Privacy Policy</title>
+  <style>body{font-family:sans-serif;max-width:700px;margin:40px auto;padding:0 20px;line-height:1.6;color:#1D2B33;}h1{font-size:24px;}h2{font-size:18px;margin-top:28px;}</style>
+  </head><body>
+  <h1>Privacy Policy — My Doc</h1>
+  <p>Last updated: ${new Date().toISOString().slice(0,10)}</p>
+  <p>My Doc is a simple document storage app. This page explains what data we access and how it's used.</p>
+  <h2>What we access</h2>
+  <p>When you sign in with Google, My Doc requests permission to create, view, and manage <strong>only the files and folders that My Doc itself creates</strong> in your Google Drive (using Google's "drive.file" scope). My Doc cannot see, read, or modify any other files in your Drive.</p>
+  <p>We also access your basic Google account email and name, solely to identify your account within the app.</p>
+  <h2>What we store</h2>
+  <p>Your files are stored directly in your own Google Drive — not on our servers. A small technical token (used to keep you signed in) is stored securely on our server and is never shared with third parties.</p>
+  <h2>What we don't do</h2>
+  <p>We do not sell, share, or use your data for advertising. We do not access any files other than the ones created by this app.</p>
+  <h2>Contact</h2>
+  <p>Questions about this policy can be sent to jouriali57@gmail.com.</p>
+  </body></html>`);
+});
+
 app.get('/', (req, res) => res.send('My Doc backend is running.'));
 
 const PORT = process.env.PORT || 3000;
