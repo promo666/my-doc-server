@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(cookieParser());
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
